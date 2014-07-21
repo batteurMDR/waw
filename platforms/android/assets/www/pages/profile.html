@@ -1,0 +1,16 @@
+<section class="users panel center padding">
+	<div class="username"></div>
+	<img class="original">
+	<p class="description"></p>
+</section>
+<section class="panel right padding" style="text-align:center;">
+</section>
+<script type="text/javascript">
+	$(function(){
+		$('img.original').attr("src","http://src.whereandwhere.com"+user.original);
+		$('.username').append(user.username);
+		$('.description').append(user.description);
+		$('textarea[name=description]').append(user.description);
+		$('input[name=email]').attr("value",user.email);
+	});
+</script>

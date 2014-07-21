@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=device-dpi" />
+        <link href='http://fonts.googleapis.com/css?family=Exo:100,200,300,400,700,400italic,300italic' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="css/app.css" />
+        <title>WAW</title>
+    </head>
+    <body>
+        <header class="header">
+            <span class="name">waw</span> 
+            <span class='loader loader-double' style="display:none;"></span>
+        </header>
+        <form id="login">
+            <input type="text" name="username" placeholder="Nom d'utilisateur">
+            <input type="password" name="password" placeholder="Mot de passe">
+            <input type="submit" value="Se connecter" class="btn-default">
+        </form>
+        <section class="view" style="display:none;"></section>
+        <nav class="nav" style="display:none;">
+            <a href="profile" class="active"><img class="avatar"></a>
+            <a href="messages"><img src="img/message.png" alt=""></a>
+            <a href="map"><img src="img/map.png" alt=""></a>
+            <a href="search"><img src="img/profile.png" alt=""></a>
+            <a href="about"><img src="img/about.png" alt=""></a>
+        </nav>
+        <p class="author"><a href="http://louis-webdesign.com">Louis-WebDesign</a></p>
+        <div class="load" style="display:none;"></div>
+        <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+        <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+        <script type="text/javascript" charset="utf-8" src="js/app.js"></script>  
+    </body>
+</html>
