@@ -1,9 +1,12 @@
 $(function(){
 	document.addEventListener('deviceready', function(){
-
+		navigator.splashscreen.hide();
 	}, false);
 	wawapi.key = "408271ba8a705f930f09a930e1e6d7e6add2cd71";
 	wawapi.secret = "bb868f16eb82823946924036aef1fe10";
+	if(localStorage.getItem("user")){
+		hideLogin(JSON.parse(localStorage.getItem("user")),false);
+	}
 	$('#login').submit(function(e){
 		e.preventDefault();
 		var that = $(this);
@@ -23,20 +26,31 @@ $(function(){
 					if(data.error){
 						alert(data.message);
 					}else{
-						user = data.data.user;
-						that.fadeOut();
-						$('.nav').find('.avatar').attr("src","http://src.whereandwhere.com"+user.avatar);
-						$('.author').fadeOut();
-						$('.nav').fadeIn();
-						$('.view').fadeIn();
-						changePanel("profile");
-						listenNav($('.nav'));
+						var datas = data.data.user;
+						datas.token = wawapi.token;
+						hideLogin(datas,true);
 					}
 				});
 			}
 		});
 	});
 });	
+function hideLogin(data,save){
+	user = data;
+	console.log(data);
+	if(save){
+		localStorage.setItem("user",JSON.stringify(data));
+	}else{
+		wawapi.token = user.token;
+	}
+	$('#login').fadeOut();
+	$('.nav').find('.avatar').attr("src","http://src.whereandwhere.com"+user.avatar);
+	$('.author').fadeOut();
+	$('.nav').fadeIn();
+	$('.view').fadeIn();
+	changePanel("profile");
+	listenNav($('.nav'));
+}
 function listenNav(elem){
 	elem.find('a').each(function(){
 		var that = $(this);
