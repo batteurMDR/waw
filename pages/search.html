@@ -54,7 +54,7 @@ function getChat(users){
 		if(data.error){
 			alert(data.message);
 		}else{
-			if(typeof data.chat == null){
+			if(data.chat == null){
 				wawapi.post("/chats/chat/",{"id":users},function(data){
 					if(data.error){
 						alert(data.message);
