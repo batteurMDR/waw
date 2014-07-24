@@ -1,0 +1,101 @@
+<section class="searching panel center padding">
+	<form class="search" class="grid"><input type="text" name="username" placeholder="Nom d'utilisateur" class="col-s-8 col-m-8 col-l-10" AUTOCOMPLETE=OFF><input type="submit" value="Chercher" class="col-s-4 col-m-4 col-l-2"></form>
+</section>
+<section class="users panel right padding">
+	<div class="username"></div>
+	<img class="original">
+	<p class="description"></p>
+	<a href="chat">Parler avec cette personne</a>
+</section>
+<section class="chat panel right padding">
+	<form class="send" class="grid"><input type="text" name="message" placeholder="Votre message" class="col-s-8 col-m-8 col-l-10" AUTOCOMPLETE=OFF><input type="submit" value="Envoyer" class="col-s-4 col-m-4 col-l-2"></form><br><br><br>
+	<div class="messages"></div>
+</section>
+<script type="text/javascript" src="http://socket.whereandwhere.com:3427/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('.search').submit(function(e){
+		e.preventDefault();
+		var that = $(this);
+		var username = that.find('input[name=username]');
+		username.blur();
+		username = username.val();
+		wawapi.get("/users/search/"+username,function(data){
+			if(data.error){
+				alert(data.message);
+			}else{
+				openProfil(data.data.user);
+			}
+		});
+	});
+});
+function openProfil(data){
+	$('.name').hide();
+	$('.load').show();
+	$('.loader').show();
+	$('img.original').attr("src","http://src.whereandwhere.com"+data.original);
+	$('.username').append(data.username);
+	$('.description').append(data.description);
+	$('a[href=chat]').click(function(e){
+		e.preventDefault();
+		getChat(data.id);
+	});
+	$('.searching').removeClass('center').addClass('left');
+	$('.users').removeClass('right').addClass('center');
+	$('.load').hide();
+	$('.loader').hide();
+	$('.name').show();	
+}
+function getChat(users){
+	$('.name').hide();
+	$('.load').show();
+	$('.loader').show();
+	wawapi.get("/chats/equals/"+users+"-"+user.id,function(data){
+		if(data.error){
+			alert(data.message);
+		}else{
+			if(typeof data.chat == null){
+				wawapi.post("/chats/chat/",{"id":users},function(data){
+					if(data.error){
+						alert(data.message);
+					}else{
+						openChat(data.chat,users);
+					}
+				});
+			}else{
+				openChat(data.chat,users);
+			}
+		}
+	});	
+}
+function openChat(id,users){
+	var socket = io.connect('http://socket.whereandwhere.com:3427');
+	socket.emit('login',{id:user.id,username:user.username,avatar:user.avatar,chat:id,user:users});
+	$('form.send').each(function(){
+		var that = $(this);
+		var message = [];
+		that.submit(function(event){
+			event.preventDefault();
+			var input = that.find('input[name=message]');
+			socket.emit('newMsg',{message:input.val(),chat:id});
+			input.val("");
+			input.focus();
+		});
+	});
+	socket.on('newMsg',function(message){
+		if(message.chat==id){
+			if(user.id==message.user.id){
+				var html = "<div class='message me'><p>"+message.message+"</p></div>";
+			}else{;
+				var html = "<div class='message'><p>"+message.message+"</p></div>";
+			}
+			$('.messages').prepend(html);
+		}
+	});	
+	$('.users').removeClass('center').addClass('left');
+	$('.chat').removeClass('right').addClass('center');
+	$('.load').hide();
+	$('.loader').hide();
+	$('.name').show();
+}
+</script>

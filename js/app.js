@@ -7,8 +7,12 @@ $(function(){
 	$('#login').submit(function(e){
 		e.preventDefault();
 		var that = $(this);
-		var username = that.find('input[name=username]').val();
-		var password = that.find('input[name=password]').val();
+		var username = that.find('input[name=username]');
+		username.blur();
+		username = username.val();
+		var password = that.find('input[name=password]');
+		password.blur();
+		password = password.val();
 		wawapi.post("/users/token",{"username":username,"password":password},function(data){
 			if(data.error){
 				alert(data.message);
