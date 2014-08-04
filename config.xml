@@ -12,7 +12,8 @@
     <access origin="*.whereandwhere.*" />
     <feature name="SplashScreen">
         <param name="ios-package" value="CDVSplashScreen" />
-    </feature>
+    </feature><
+    <icon src="res/icons/icon.png" />
     <icon gap:density="ldpi" gap:platform="android" src="res/icons/android/icon-36-ldpi.png" />
     <icon gap:density="mdpi" gap:platform="android" src="res/icons/android/icon-48-mdpi.png" />
     <icon gap:density="hdpi" gap:platform="android" src="res/icons/android/icon-72-hdpi.png" />
